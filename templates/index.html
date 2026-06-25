@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilePress - Compress Files</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FilePress</h1>
+            <p class="subtitle">Compress images, PDFs, and files without losing quality</p>
+        </header>
+
+        <main>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="upload-card">
+                <form action="{{ url_for('compress') }}" method="post" enctype="multipart/form-data" id="compress-form">
+                    <div class="drop-zone" id="drop-zone">
+                        <div class="drop-zone-content">
+                            <span class="icon">&#128451;</span>
+                            <p>Drag & drop file here or click to browse</p>
+                            <p class="hint">Supports: JPG, PNG, WebP, BMP, TIFF, PDF, DOC, DOCX, XLS, XLSX, TXT, ZIP</p>
+                        </div>
+                        <input type="file" name="file" id="file-input" class="file-input" required>
+                    </div>
+
+                    <div class="file-info" id="file-info" style="display:none;">
+                        <span id="file-name"></span>
+                        <span id="file-size"></span>
+                    </div>
+
+                    <div class="options">
+                        <div class="option-group">
+                            <label for="quality">Quality: <span id="quality-value">80</span>%</label>
+                            <input type="range" id="quality" name="quality" min="10" max="100" value="80">
+                        </div>
+
+                        <div class="option-group">
+                            <label for="compress_level">ZIP Compression Level:</label>
+                            <select id="compress_level" name="compress_level">
+                                <option value="0">0 - Store (fastest)</option>
+                                <option value="1">1 - Fast</option>
+                                <option value="3">3 - Normal</option>
+                                <option value="6" selected>6 - Good (recommended)</option>
+                                <option value="9">9 - Maximum (slowest)</option>
+                            </select>
+                        </div>
+
+                        <div class="option-group">
+                            <label for="output_format">Convert to:</label>
+                            <select id="output_format" name="output_format">
+                                <option value="">Same as original</option>
+                                <option value="JPEG">JPEG</option>
+                                <option value="PNG">PNG</option>
+                                <option value="WEBP">WebP</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="compress-btn">
+                        <span class="btn-text">Compress</span>
+                        <span class="spinner" style="display:none;"></span>
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <p>FilePress &mdash; Open source file compression tool</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

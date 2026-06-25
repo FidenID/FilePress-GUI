@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilePress - Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FilePress</h1>
+            <p class="subtitle">Compression complete</p>
+        </header>
+
+        <main>
+            <div class="result-card">
+                <div class="result-header">
+                    <span class="success-icon">&#10004;</span>
+                    <h2>Compression Successful!</h2>
+                </div>
+
+                <div class="comparison">
+                    <div class="comparison-item">
+                        <span class="label">Original</span>
+                        <span class="filename">{{ original }}</span>
+                        <span class="size">{{ orig_size }}</span>
+                    </div>
+                    <div class="arrow">&rarr;</div>
+                    <div class="comparison-item">
+                        <span class="label">Compressed</span>
+                        <span class="filename">{{ compressed }}</span>
+                        <span class="size comp">{{ comp_size }}</span>
+                    </div>
+                </div>
+
+                <div class="savings">
+                    <span class="savings-badge">Saved {{ ratio }}%</span>
+                </div>
+
+                <div class="actions">
+                    <a href="{{ url_for('download', filename=compressed) }}" class="btn btn-primary" download>
+                        Download Compressed File
+                    </a>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                        Compress Another File
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>FilePress &mdash; Open source file compression tool</p>
+        </footer>
+    </div>
+</body>
+</html>
