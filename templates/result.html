@@ -1,57 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FilePress - Result</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FilePress — Compression done</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>FilePress</h1>
-            <p class="subtitle">Compression complete</p>
-        </header>
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon">FP</div>
+      </div>
+      <h1>FilePress</h1>
+      <p class="subtitle">Compression complete</p>
+    </header>
 
-        <main>
-            <div class="result-card">
-                <div class="result-header">
-                    <span class="success-icon">&#10004;</span>
-                    <h2>Compression Successful!</h2>
-                </div>
+    <main>
+      <div class="glass-card result-card">
+        <div class="result-header">
+          <div class="success-anim">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <h2>Compression Successful!</h2>
+        </div>
 
-                <div class="comparison">
-                    <div class="comparison-item">
-                        <span class="label">Original</span>
-                        <span class="filename">{{ original }}</span>
-                        <span class="size">{{ orig_size }}</span>
-                    </div>
-                    <div class="arrow">&rarr;</div>
-                    <div class="comparison-item">
-                        <span class="label">Compressed</span>
-                        <span class="filename">{{ compressed }}</span>
-                        <span class="size comp">{{ comp_size }}</span>
-                    </div>
-                </div>
+        <div class="comparison">
+          <div class="comparison-item">
+            <span class="label">Original</span>
+            <span class="filename">{{ original }}</span>
+            <span class="size">{{ orig_size }}</span>
+          </div>
+          <div class="comparison-arrow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+          <div class="comparison-item">
+            <span class="label">Compressed</span>
+            <span class="filename">{{ compressed }}</span>
+            <span class="size comp">{{ comp_size }}</span>
+          </div>
+        </div>
 
-                <div class="savings">
-                    <span class="savings-badge">Saved {{ ratio }}%</span>
-                </div>
+        <div class="savings-wrap">
+          <span class="savings-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+              <polyline points="17 6 23 6 23 12"/>
+            </svg>
+            Saved {{ ratio }}%
+          </span>
+        </div>
 
-                <div class="actions">
-                    <a href="{{ url_for('download', filename=compressed) }}" class="btn btn-primary" download>
-                        Download Compressed File
-                    </a>
-                    <a href="{{ url_for('index') }}" class="btn btn-secondary">
-                        Compress Another File
-                    </a>
-                </div>
-            </div>
-        </main>
+        <div class="actions">
+          <a href="{{ url_for('download', filename=compressed) }}" class="btn btn-success" download>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download Compressed File
+          </a>
+          <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            Compress Another File
+          </a>
+        </div>
+      </div>
+    </main>
 
-        <footer>
-            <p>FilePress &mdash; Open source file compression tool</p>
-        </footer>
-    </div>
+    <footer>
+      <p>FilePress &mdash; open source &middot; <a href="https://github.com">GitHub</a></p>
+    </footer>
+  </div>
 </body>
 </html>
