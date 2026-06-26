@@ -75,6 +75,14 @@
       if (content) content.textContent = 'File selected — ready to compress';
       dropZone.classList.add('has-file');
     }
+
+    const docxOpt = document.querySelector('.opt-pdf');
+    if (docxOpt) {
+      docxOpt.style.display = ext === 'pdf' ? 'block' : 'none';
+      if (ext !== 'pdf' && docxOpt.selected) {
+        document.getElementById('output_format').value = '';
+      }
+    }
   }
 
   function resetFileInfo() {
@@ -84,6 +92,8 @@
       if (content) content.textContent = 'Drag & drop file here or click to browse';
       dropZone.classList.remove('has-file');
     }
+    const docxOpt = document.querySelector('.opt-pdf');
+    if (docxOpt) docxOpt.style.display = 'none';
     fileInput.value = '';
   }
 

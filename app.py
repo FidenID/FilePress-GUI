@@ -1,6 +1,8 @@
 import os
 import zipfile
 import uuid
+import subprocess
+import shutil
 from pathlib import Path
 
 from flask import (
@@ -62,6 +64,20 @@ def compress_pdf(input_path, output_path):
         writer.write(f)
 
 
+def convert_pdf_to_docx(input_path, output_path):
+    subprocess.run([
+        'libreoffice', '--headless',
+        '--infilter=writer_pdf_import',
+        '--convert-to', 'docx',
+        '--outdir', str(output_path.parent),
+        str(input_path)
+    ], check=True, capture_output=True, timeout=120)
+    out_name = Path(input_path).stem + '.docx'
+    result = output_path.parent / out_name
+    if result.exists():
+        shutil.move(str(result), str(output_path))
+
+
 def compress_zip(input_path, output_path, level):
     base = os.path.splitext(os.path.basename(input_path))[0]
     zip_path = output_path / f'{base}.zip'
@@ -118,11 +134,18 @@ def compress():
     output_path = COMPRESSED_DIR / output_filename
 
     try:
-        if ext in ('pdf',):
+        if ext in ('pdf',) and output_format == 'DOCX':
+            output_filename = f'{uid}_converted.docx'
+            output_path = COMPRESSED_DIR / output_filename
+            convert_pdf_to_docx(input_path, output_path)
+            action = 'converted'
+        elif ext in ('pdf',):
             compress_pdf(input_path, output_path)
+            action = 'compressed'
         elif ext in ('png', 'jpg', 'jpeg', 'webp', 'bmp', 'tiff', 'tif'):
             fmt = output_format if output_format else None
             compress_image(input_path, output_path, quality, fmt)
+            action = 'compressed'
             if output_format:
                 out_ext = output_format.lower()
                 if out_ext == 'jpeg':
@@ -134,10 +157,12 @@ def compress():
             zip_result = compress_zip(input_path, output_path.parent, compress_level)
             output_path = zip_result
             output_filename = output_path.name
+            action = 'compressed'
         else:
             zip_result = compress_zip(input_path, output_path.parent, compress_level)
             output_path = zip_result
             output_filename = output_path.name
+            action = 'compressed'
     except Exception as e:
         flash(f'Compression failed: {str(e)}', 'error')
         return redirect(url_for('index'))
@@ -152,7 +177,8 @@ def compress():
                            orig_size=format_size(orig_size),
                            comp_size=format_size(comp_size),
                            ratio=f'{ratio:.1f}',
-                           uid=uid)
+                           uid=uid,
+                           action=action)
 
 
 @app.route('/download/<filename>')

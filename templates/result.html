@@ -24,7 +24,7 @@
               <polyline points="20 6 9 17 4 12"/>
             </svg>
           </div>
-          <h2>Compression Successful!</h2>
+          <h2>{% if action == 'converted' %}Conversion Successful!{% else %}Compression Successful!{% endif %}</h2>
         </div>
 
         <div class="comparison">
